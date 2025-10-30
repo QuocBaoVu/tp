@@ -55,6 +55,13 @@ public class UniqueLocationListTest {
     }
 
     @Test
+    public void add_locationWithSameNameDifferentCase_throwsDuplicateLocationException() {
+        uniqueLocationList.add(SINGAPORE);
+        Location singaporeLowerCase = new LocationBuilder(SINGAPORE).withLocationName("singapore").build();
+        assertThrows(DuplicateLocationException.class, () -> uniqueLocationList.add(singaporeLowerCase));
+    }
+
+    @Test
     public void remove_nullLocation_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> uniqueLocationList.remove((Location) null));
     }

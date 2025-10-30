@@ -1,5 +1,6 @@
 package seedu.address.model.location;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -54,5 +55,11 @@ public class LocationNameTest {
 
         // different values -> returns false
         assertFalse(locationName.equals(new LocationName("Other Location")));
+
+        // same values with different casing -> returns true
+        assertTrue(locationName.equals(new LocationName("valid location")));
+
+        // hashCode is case-insensitive
+        assertEquals(locationName.hashCode(), new LocationName("valid location").hashCode());
     }
 }

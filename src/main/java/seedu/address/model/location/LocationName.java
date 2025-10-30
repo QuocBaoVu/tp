@@ -3,6 +3,8 @@ package seedu.address.model.location;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import java.util.Locale;
+
 /**
  * Represents the name of a {@link Location} in Maplet.
  * Guarantees: immutable; is valid as declared in {@link #isValidLocationName(String)}.
@@ -54,11 +56,11 @@ public class LocationName {
         }
 
         LocationName otherLocationName = (LocationName) other;
-        return value.equals(otherLocationName.value);
+        return value.equalsIgnoreCase(otherLocationName.value);
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return value.toLowerCase(Locale.ROOT).hashCode();
     }
 }
