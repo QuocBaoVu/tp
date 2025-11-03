@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -60,7 +59,7 @@ public class AddLocationCommandTest {
         AddLocationCommand command = new AddLocationCommand(locationName, indexes);
 
         Location expectedLocation = new Location(locationName,
-                new HashSet<>(Arrays.asList(ALICE.getName(), BENSON.getName())));
+                Arrays.asList(ALICE, BENSON));
         CommandResult commandResult = command.execute(modelStub);
 
         assertEquals(String.format(AddLocationCommand.MESSAGE_SUCCESS, Messages.format(expectedLocation)),
@@ -72,7 +71,7 @@ public class AddLocationCommandTest {
     public void execute_duplicateLocation_throwsCommandException() {
         ModelStubWithLocation modelStub = new ModelStubWithLocation(Arrays.asList(ALICE, BENSON),
                 Collections.singletonList(new LocationBuilder().withLocationName("Singapore")
-                        .withAttractionNames(ALICE.getName().fullName)
+                        .withAttractions(ALICE)
                         .build()));
         LocationName locationName = new LocationName("Singapore");
         List<Index> indexes = Collections.singletonList(Index.fromOneBased(1));

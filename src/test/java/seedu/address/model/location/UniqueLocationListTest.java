@@ -78,7 +78,7 @@ public class UniqueLocationListTest {
     public void setLocation_existingLocation_replacesLocation() {
         uniqueLocationList.add(SINGAPORE);
         Location editedSingapore = new LocationBuilder(SINGAPORE)
-                .withAttractionNames(BENSON.getName().fullName)
+                .withAttractions(BENSON)
                 .build();
         uniqueLocationList.setLocation(SINGAPORE, editedSingapore);
 

@@ -90,6 +90,7 @@ class JsonAdaptedLocation {
             if (!isNewEntry) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_ATTRACTION_REFERENCE);
             }
+            modelAttractions.add(referencedAttraction);
         }
 
         try {

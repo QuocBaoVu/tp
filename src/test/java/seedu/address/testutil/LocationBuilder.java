@@ -1,11 +1,10 @@
 package seedu.address.testutil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
-import seedu.address.model.attraction.Name;
+import seedu.address.model.attraction.Attraction;
 import seedu.address.model.location.Location;
 import seedu.address.model.location.LocationName;
 
@@ -18,14 +17,17 @@ public class LocationBuilder {
     public static final String[] DEFAULT_ATTRACTIONS = {"Alice Pauline"};
 
     private LocationName locationName;
-    private Set<Name> attractionNames;
+    private List<Attraction> attractions;
 
     /**
      * LocationBuilder Constructor
      */
     public LocationBuilder() {
         locationName = new LocationName(DEFAULT_LOCATION_NAME);
-        attractionNames = convertToNameSet(DEFAULT_ATTRACTIONS);
+        attractions = new ArrayList<>();
+        Arrays.stream(DEFAULT_ATTRACTIONS)
+                .map(name -> new AttractionBuilder().withName(name).build())
+                .forEach(attractions::add);
     }
 
     /**
@@ -34,7 +36,7 @@ public class LocationBuilder {
      */
     public LocationBuilder(Location location) {
         locationName = location.getName();
-        attractionNames = new HashSet<>(location.getAttractionNames());
+        attractions = new ArrayList<>(location.getAttractions());
     }
 
     /**
@@ -48,18 +50,12 @@ public class LocationBuilder {
     /**
      * Sets the attraction names of the {@code Location} that we are building.
      */
-    public LocationBuilder withAttractionNames(String... names) {
-        attractionNames = convertToNameSet(names);
+    public LocationBuilder withAttractions(Attraction... attractions) {
+        this.attractions = new ArrayList<>(Arrays.asList(attractions));
         return this;
     }
 
     public Location build() {
-        return new Location(locationName, attractionNames);
-    }
-
-    private Set<Name> convertToNameSet(String... names) {
-        return Arrays.stream(names)
-                .map(Name::new)
-                .collect(Collectors.toSet());
+        return new Location(locationName, attractions);
     }
 }

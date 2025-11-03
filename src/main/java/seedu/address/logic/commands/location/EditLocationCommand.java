@@ -6,11 +6,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION_ATTRACTION_IN
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION_NAME;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
@@ -20,7 +18,6 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.attraction.Attraction;
-import seedu.address.model.attraction.Name;
 import seedu.address.model.location.Location;
 import seedu.address.model.location.LocationName;
 

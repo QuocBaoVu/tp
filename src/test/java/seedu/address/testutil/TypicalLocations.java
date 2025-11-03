@@ -16,10 +16,10 @@ import seedu.address.model.location.Location;
 public class TypicalLocations {
 
     public static final Location SINGAPORE = new LocationBuilder().withLocationName("Singapore")
-            .withAttractionNames(ALICE.getName().fullName, BENSON.getName().fullName)
+            .withAttractions(ALICE, BENSON)
             .build();
     public static final Location CBD = new LocationBuilder().withLocationName("Central Business District")
-            .withAttractionNames(BENSON.getName().fullName, CARL.getName().fullName)
+            .withAttractions(CARL, BENSON)
             .build();
 
     private TypicalLocations() {}

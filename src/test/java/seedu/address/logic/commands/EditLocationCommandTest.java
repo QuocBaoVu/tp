@@ -139,7 +139,7 @@ public class EditLocationCommandTest {
     @Test
     public void execute_removeLastAttraction_throwsCommandException() {
         Location singleAttractionLocation = new Location(new LocationName("Standalone"),
-                new HashSet<>(Collections.singleton(ALICE.getName())));
+                Collections.singletonList(ALICE));
         ModelStubWithLocations modelStub = new ModelStubWithLocations(Collections.singletonList(ALICE),
                 new ArrayList<>(Collections.singletonList(singleAttractionLocation)));
         EditLocationCommand command = new EditLocationCommand(singleAttractionLocation.getName(), REMOVE,

@@ -98,7 +98,7 @@ public class DeleteCommandTest {
     public void execute_attractionReferencedInLocation_throwsCommandException() {
         Maplet mapletWithLocation = new Maplet();
         mapletWithLocation.addAttraction(ALICE);
-        mapletWithLocation.addLocation(new LocationBuilder().withAttractionNames(ALICE.getName().fullName).build());
+        mapletWithLocation.addLocation(new LocationBuilder().withAttractions(ALICE).build());
         Model modelWithLocation = new ModelManager(mapletWithLocation, new UserPrefs());
         DeleteCommand deleteCommand = new DeleteCommand(Index.fromOneBased(1));
 

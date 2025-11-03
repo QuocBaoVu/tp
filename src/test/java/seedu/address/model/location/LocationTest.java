@@ -7,25 +7,27 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalLocations.CBD;
 import static seedu.address.testutil.TypicalLocations.SINGAPORE;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.attraction.Name;
+import seedu.address.testutil.AttractionBuilder;
 import seedu.address.testutil.LocationBuilder;
 
 public class LocationTest {
 
     @Test
     public void constructor_nullFields_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Location(null, Set.of(new Name("Valid"))));
+        assertThrows(NullPointerException.class, () -> new Location(null,
+                List.of(new AttractionBuilder().build())));
         assertThrows(NullPointerException.class, () -> new Location(new LocationName("Valid"), null));
     }
 
     @Test
     public void constructor_emptyAttractions_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () ->
-                new Location(new LocationName("Empty"), Set.of()));
+                new Location(new LocationName("Empty"), List.of()));
     }
 
     @Test
@@ -44,7 +46,7 @@ public class LocationTest {
 
         // same name -> returns true
         Location editedSingapore = new LocationBuilder(SINGAPORE)
-                .withAttractionNames("Alice Pauline")
+                .withAttractions(new AttractionBuilder().withName("Alice Pauline").build())
                 .build();
         assertTrue(SINGAPORE.isSameLocation(editedSingapore));
 
@@ -76,7 +78,7 @@ public class LocationTest {
         Location location = SINGAPORE;
         String expected = Location.class.getCanonicalName() + "{"
                 + "name=" + location.getName()
-                + ", attractions=" + location.getAttractionNames() + "}";
+                + ", attractions=" + location.getAttractions() + "}";
         assertEquals(expected, location.toString());
     }
 }
