@@ -87,14 +87,14 @@ public class SampleDataUtil {
         };
     }
 
-    public static Location[] getSampleLocations() {
+    public static Location[] getSampleLocations(Attraction[] attractions) {
         return new Location[] {
             new Location(new LocationName("Singapore City"),
-                    getAttractionNameSet("Gardens by the Bay", "Marina Bay Sands Singapore", "Singapore Flyer")),
+                    List.of(attractions[0], attractions[1], attractions[2])),
             new Location(new LocationName("Sentosa"),
-                    getAttractionNameSet("Universal Studios Singapore")),
+                    List.of(attractions[0])),
             new Location(new LocationName("Mandai"),
-                    getAttractionNameSet("Singapore Zoo"))
+                    List.of(attractions[4]))
         };
     }
 
@@ -107,7 +107,7 @@ public class SampleDataUtil {
         for (Itinerary itinerary : getSampleItineraries(sampleAttractions)) {
             sampleAb.addItinerary(itinerary);
         }
-        for (Location sampleLocation : getSampleLocations()) {
+        for (Location sampleLocation : getSampleLocations(sampleAttractions)) {
             sampleAb.addLocation(sampleLocation);
         }
         return sampleAb;
@@ -133,14 +133,6 @@ public class SampleDataUtil {
                 .collect(Collectors.toSet());
     }
 
-    /**
-     * Returns a set containing the attraction names provided.
-     */
-    public static Set<Name> getAttractionNameSet(String... names) {
-        return Arrays.stream(names)
-                .map(Name::new)
-                .collect(Collectors.toSet());
-    }
     /**
      * Returns a comment set containing the list of comments given.
      */

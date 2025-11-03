@@ -162,6 +162,13 @@ public class ModelManager implements Model {
             }
         }
 
+        for (Location location : maplet.getLocationList()) {
+            if (location.hasAttraction(target)) {
+                location.removeAttraction(target);
+                location.addAttraction(editedAttraction);
+            }
+        }
+
     }
 
     @Override

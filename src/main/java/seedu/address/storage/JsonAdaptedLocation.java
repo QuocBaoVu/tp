@@ -45,7 +45,7 @@ class JsonAdaptedLocation {
      */
     public JsonAdaptedLocation(Location source) {
         name = source.getName().toString();
-        source.getAttractionNames().forEach(attractionName -> attractions.add(attractionName.fullName));
+        source.getAttractions().forEach(attraction -> attractions.add(attraction.getName().fullName));
     }
 
     /**
@@ -68,6 +68,8 @@ class JsonAdaptedLocation {
         }
 
         final Set<Name> attractionNames = new HashSet<>();
+        final List<Attraction> modelAttractions = new ArrayList<>();
+
         for (String attractionNameString : attractions) {
             if (attractionNameString == null) {
                 throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
@@ -77,9 +79,11 @@ class JsonAdaptedLocation {
                 throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
             }
             Name attractionName = new Name(attractionNameString);
-            boolean attractionExists = existingAttractions.stream()
-                    .anyMatch(attraction -> attraction.getName().equals(attractionName));
-            if (!attractionExists) {
+            Attraction referencedAttraction = existingAttractions.stream()
+                    .filter(attraction -> attraction.getName().equals(attractionName))
+                    .findFirst()
+                    .orElse(null);
+            if (referencedAttraction == null) {
                 throw new IllegalValueException(String.format(MESSAGE_INVALID_ATTRACTION_REFERENCE, attractionName));
             }
             boolean isNewEntry = attractionNames.add(attractionName);
@@ -89,7 +93,7 @@ class JsonAdaptedLocation {
         }
 
         try {
-            return new Location(modelLocationName, attractionNames);
+            return new Location(modelLocationName, modelAttractions);
         } catch (IllegalArgumentException ex) {
             throw new IllegalValueException(ex.getMessage());
         }

@@ -177,7 +177,7 @@ public class Maplet implements ReadOnlyMaplet {
     public boolean isAttractionInAnyLocation(Attraction attraction) {
         requireNonNull(attraction);
         return locations.asUnmodifiableObservableList().stream()
-                .anyMatch(location -> location.getAttractionNames().contains(attraction.getName()));
+                .anyMatch(location -> location.hasAttraction(attraction));
     }
 
     /**
