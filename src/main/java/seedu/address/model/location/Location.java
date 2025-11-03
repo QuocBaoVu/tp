@@ -3,12 +3,16 @@ package seedu.address.model.location;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.attraction.Attraction;
 import seedu.address.model.attraction.Name;
+import seedu.address.model.attraction.UniqueAttractionList;
 
 /**
  * Represents a grouping of attractions within the same location.
@@ -20,18 +24,18 @@ public class Location {
             "A location must contain at least one attraction.";
 
     private final LocationName name;
-    private final Set<Name> attractions = new HashSet<>();
+    private final UniqueAttractionList attractions = new UniqueAttractionList();
 
     /**
      * Every field must be present and not null.
      */
-    public Location(LocationName name, Set<Name> attractions) {
+    public Location(LocationName name, List<Attraction> attractions) {
         requireAllNonNull(name, attractions);
         if (attractions.isEmpty()) {
             throw new IllegalArgumentException(MESSAGE_EMPTY_ATTRACTIONS);
         }
         this.name = name;
-        this.attractions.addAll(attractions);
+        this.attractions.setAttractions(attractions);
     }
 
     public LocationName getName() {
@@ -43,7 +47,25 @@ public class Location {
      * if modification is attempted.
      */
     public Set<Name> getAttractionNames() {
-        return Collections.unmodifiableSet(attractions);
+        return Collections.unmodifiableSet(attractions.asUnmodifiableObservableList().stream()
+                .map(Attraction::getName)
+                .collect(Collectors.toSet()));
+    }
+
+    public ObservableList<Attraction> getAttractions() {
+        return attractions.asUnmodifiableObservableList();
+    }
+
+    public boolean hasAttraction(Attraction attraction) {
+        return attractions.contains(attraction);
+    }
+
+    public void addAttraction(Attraction attraction) {
+        attractions.add(attraction);
+    }
+
+    public void removeAttraction(Attraction attraction) {
+        attractions.remove(attraction);
     }
 
     /**
