@@ -40,6 +40,8 @@ public class AddLocationCommand extends Command {
     public static final String MESSAGE_SUCCESS = "New location added: %1$s";
     public static final String MESSAGE_DUPLICATE_LOCATION = "This location already exists in the maplet.";
     public static final String MESSAGE_NO_ATTRACTIONS = "At least one attraction index must be provided.";
+    public static final String MESSAGE_DUPLICATE_ATTRACTION_REFERENCE =
+            "Each attraction should be referenced at most once when creating an location.";
 
     private final LocationName locationName;
     private final List<Index> attractionIndexes;
@@ -62,17 +64,21 @@ public class AddLocationCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         ObservableList<Attraction> lastShownList = model.getFilteredAttractionList();
-        Set<Name> attractionNames = new HashSet<>();
+        Set<Attraction> seenAttraction = new HashSet<>();
+        List<Attraction> attractions = new ArrayList<>();
 
         for (Index index : attractionIndexes) {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_ATTRACTION_DISPLAYED_INDEX);
             }
             Attraction attraction = lastShownList.get(index.getZeroBased());
-            attractionNames.add(attraction.getName());
+            if (!seenAttraction.add(attraction)) {
+                throw new CommandException(MESSAGE_DUPLICATE_ATTRACTION_REFERENCE);
+            }
+            attractions.add(attraction);
         }
 
-        Location location = new Location(locationName, attractionNames);
+        Location location = new Location(locationName, attractions);
 
         if (model.hasLocationName(locationName)) {
             throw new CommandException(MESSAGE_DUPLICATE_LOCATION);

@@ -5,7 +5,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION_ACTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION_ATTRACTION_INDEX;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION_NAME;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -94,7 +96,6 @@ public class EditLocationCommand extends Command {
         }
 
         Attraction attraction = lastShownList.get(attractionIndex.getZeroBased());
-        Name attractionName = attraction.getName();
 
         Optional<Location> optionalTargetLocation = model.getLocationList().stream()
                 .filter(location -> location.getName().equals(locationName))
@@ -105,16 +106,17 @@ public class EditLocationCommand extends Command {
         }
 
         Location targetLocation = optionalTargetLocation.get();
-        Set<Name> updatedAttractions = new HashSet<>(targetLocation.getAttractionNames());
+        List<Attraction> updatedAttractions = new ArrayList<>(targetLocation.getAttractions());
 
         switch (action) {
         case ADD:
-            if (!updatedAttractions.add(attractionName)) {
+            if (targetLocation.hasAttraction(attraction)) {
                 throw new CommandException(MESSAGE_ATTRACTION_ALREADY_PRESENT);
             }
+            updatedAttractions.add(attraction);
             break;
         case REMOVE:
-            if (!updatedAttractions.remove(attractionName)) {
+            if (!updatedAttractions.remove(attraction)) {
                 throw new CommandException(MESSAGE_ATTRACTION_NOT_PRESENT);
             }
             if (updatedAttractions.isEmpty()) {
